@@ -9,7 +9,7 @@ interface BasicUserInfo {
   /**
    * 用户昵称
    */
-  realName: string;
+  real_name: string;
   /**
    * 用户角色
    */
@@ -17,7 +17,7 @@ interface BasicUserInfo {
   /**
    * 用户id
    */
-  userId: string;
+  user_id: string;
   /**
    * 用户名
    */

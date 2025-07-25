@@ -11,10 +11,10 @@ interface UserInfo extends BasicUserInfo {
    */
   homePath: string;
 
-  /**
-   * accessToken
-   */
-  token: string;
+  // /**
+  //  * accessToken
+  //  */
+  // token: string;
 }
 
 export type { UserInfo };
