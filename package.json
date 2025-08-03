@@ -52,6 +52,10 @@
     "version": "pnpm exec changeset version && pnpm install --no-frozen-lockfile",
     "catalog": "pnpx codemod pnpm/catalog"
   },
+  "dependencies": {
+    "@types/katex": "^0.16.7",
+    "katex": "^0.16.22"
+  },
   "devDependencies": {
     "@changesets/changelog-github": "catalog:",
     "@changesets/cli": "catalog:",

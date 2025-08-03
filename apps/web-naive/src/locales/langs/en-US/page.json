@@ -3,12 +3,113 @@
     "login": "Login",
     "register": "Register",
     "codeLogin": "Code Login",
-    "qrcodeLogin": "Qr Code Login",
+    "qrcodeLogin": "QRCode Login",
     "forgetPassword": "Forget Password"
   },
   "dashboard": {
     "title": "Dashboard",
     "analytics": "Analytics",
     "workspace": "Workspace"
+  },
+  "questions": {
+    "title": "Question Management",
+    "list": "Question List",
+    "import": "Import Questions"
+  },
+  "common": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "backToList": "Back to List",
+    "noPreview": "No Preview",
+    "deleteSuccess": "Delete successful",
+    "deleteFailed": "Delete failed",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "question": {
+    "page": {
+      "title": {
+        "list": "Question List",
+        "import": "Import Questions",
+        "edit": "Edit Question",
+        "detail": "Question Detail",
+        "basicInfo": "Basic Information",
+        "content": "Question Content",
+        "analysis": "Question Analysis",
+        "step": "Step {step}"
+      }
+    },
+    "property": {
+      "id": "Question ID",
+      "type": "Question Type",
+      "status": "Status",
+      "subject": "Subject",
+      "grade": "Grade",
+      "difficulty": "Difficulty",
+      "knowledgePoints": "Knowledge Points",
+      "answer": "Answer",
+      "solutionSteps": "Solution Steps",
+      "explanation": "Explanation",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "errorMessage": "Error Message"
+    },
+    "action": {
+      "backToList": "Back to List",
+      "edit": "Edit",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "markAsCompleted": "Mark as Completed",
+      "markAsConfirming": "Mark as Confirming"
+    },
+    "message": {
+      "fetchFailed": "Failed to fetch question details",
+      "statusUpdateSuccess": "Status updated successfully",
+      "statusUpdateFailed": "Failed to update status",
+      "statusChangeConfirm": "Are you sure you want to change the question status?",
+      "noContent": "No question content available",
+      "noAnalysis": "No analysis content available",
+      "analysisProcessing": "Question analysis is being processed...",
+      "notFound": "Question not found or has been deleted"
+    },
+
+    "options": {
+      "subjects": {
+        "数学": "Mathematics",
+        "语文": "Chinese",
+        "英语": "English",
+        "物理": "Physics",
+        "化学": "Chemistry",
+        "生物": "Biology",
+        "历史": "History",
+        "地理": "Geography",
+        "政治": "Politics"
+      },
+      "questionTypes": {
+        "选择题": "Multiple Choice",
+        "填空题": "Fill in the Blank",
+        "判断题": "True/False",
+        "简答题": "Short Answer",
+        "计算题": "Calculation",
+        "证明题": "Proof",
+        "作文题": "Essay"
+      },
+      "difficulties": {
+        "简单": "Easy",
+        "中等": "Medium",
+        "困难": "Hard"
+      },
+      "grades": {
+        "grade": "Grade {grade}"
+      },
+      "statuses": {
+        "pending": "Pending",
+        "processing": "Processing",
+        "completed": "Completed",
+        "failed": "Failed",
+        "confirming": "Confirming"
+      }
+    }
   }
 }

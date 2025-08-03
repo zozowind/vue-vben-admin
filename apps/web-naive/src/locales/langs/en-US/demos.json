@@ -12,3 +12,93 @@
     "element-plus": "Element Plus Version"
   }
 }
+
+"questions": {
+  "title": "Question Management",
+  "list": "Question List",
+  "import": "Import Questions",
+  "detail": "Question Detail",
+  "search": "Search Questions",
+  "create": "Create Question",
+  "edit": "Edit Question",
+  "delete": "Delete Question",
+  "batchDelete": "Batch Delete",
+  "export": "Export Questions",
+  "status": "Status",
+  "type": "Question Type",
+  "subject": "Subject",
+  "grade": "Grade",
+  "difficulty": "Difficulty",
+  "knowledgePoints": "Knowledge Points",
+  "content": "Question Content",
+  "analysis": "Question Analysis",
+  "answer": "Answer",
+  "solutionSteps": "Solution Steps",
+  "explanation": "Explanation",
+  "createdAt": "Created At",
+  "updatedAt": "Updated At",
+  "actions": "Actions",
+  "searchPlaceholder": "Enter search keywords",
+  "importSuccess": "Question imported successfully",
+  "importFailed": "Question import failed",
+  "deleteConfirm": "Are you sure to delete this question?",
+  "batchDeleteConfirm": "Are you sure to delete selected questions?",
+  "id": "Question ID",
+  "basicInfo": "Basic Information",
+  "errorMessage": "Error Message",
+  "analysisSummary": "Analysis Summary",
+  "noContentPreview": "No content preview available for this question, please check the database record for details",
+  "notFound": "Question not found or has been deleted",
+  "step": "Step {step}",
+  "selectToDelete": "Please select questions to delete",
+  "batchDeleteSuccess": "Successfully deleted {count} questions",
+  "batchDeletePartialFailed": "{count} questions failed to delete",
+  "batchDeleteFailed": "Batch delete failed",
+  "fetchFailed": "Failed to fetch question details",
+  "statusUpdateSuccess": "Status updated successfully",
+  "statusUpdateFailed": "Failed to update status",
+  "statusChangeConfirm": "Are you sure you want to change the question status?",
+  "markAsCompleted": "Mark as Completed",
+  "markAsConfirming": "Mark as Confirming",
+  "contentPlaceholder": "Question content will be displayed here (LaTeX formulas supported)",
+  "noContent": "No question content available",
+  "noAnalysis": "No analysis content available",
+  "analysisProcessing": "Question analysis is being processed...",
+  "options": {
+    "subjects": {
+      "数学": "Mathematics",
+      "语文": "Chinese",
+      "英语": "English",
+      "物理": "Physics",
+      "化学": "Chemistry",
+      "生物": "Biology",
+      "历史": "History",
+      "地理": "Geography",
+      "政治": "Politics"
+    },
+    "questionTypes": {
+      "选择题": "Multiple Choice",
+      "填空题": "Fill in the Blank",
+      "判断题": "True/False",
+      "简答题": "Short Answer",
+      "计算题": "Calculation",
+      "证明题": "Proof",
+      "作文题": "Essay"
+    },
+    "difficulties": {
+      "简单": "Easy",
+      "中等": "Medium",
+      "困难": "Hard"
+    },
+    "grades": {
+      "grade": "Grade {grade}"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "completed": "Completed",
+      "failed": "Failed",
+      "confirming": "Confirming"
+    }
+  }
+},

@@ -22,7 +22,10 @@ export namespace AuthApi {
  * 登录
  */
 export async function loginApi(data: AuthApi.LoginParams) {
-  return requestClient.post<AuthApi.LoginResult>('/v1/admin/auth/login', data);
+  return requestClient.post<AuthApi.LoginResult>(
+    '/api/v1/admin/auth/login',
+    data,
+  );
 }
 
 /**
@@ -47,5 +50,5 @@ export async function logoutApi() {
  * 获取用户权限码
  */
 export async function getAccessCodesApi() {
-  return requestClient.get<string[]>('/v1/admin/auth/codes');
+  return requestClient.get<string[]>('/api/v1/admin/auth/codes');
 }

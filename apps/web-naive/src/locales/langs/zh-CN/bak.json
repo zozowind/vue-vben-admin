@@ -1,0 +1,91 @@
+{
+  "questions": {
+    "title": "题目管理",
+    "list": "题目列表",
+    "import": "题目导入",
+    "detail": "题目详情",
+    "search": "搜索题目",
+    "create": "创建题目",
+    "edit": "编辑题目",
+    "delete": "删除题目",
+    "batchDelete": "批量删除",
+    "export": "导出题目",
+    "status": "状态",
+    "type": "题目类型",
+    "subject": "学科",
+    "grade": "年级",
+    "difficulty": "难度",
+    "knowledgePoints": "知识点",
+    "content": "题目内容",
+    "analysis": "题目解析",
+    "answer": "答案",
+    "solutionSteps": "解题步骤",
+    "explanation": "解释说明",
+    "createdAt": "创建时间",
+    "updatedAt": "更新时间",
+    "actions": "操作",
+    "searchPlaceholder": "请输入搜索关键词",
+    "importSuccess": "题目导入成功",
+    "importFailed": "题目导入失败",
+    "deleteConfirm": "确认删除该题目吗？",
+    "batchDeleteConfirm": "确认删除选中的题目吗？",
+    "id": "题目ID",
+    "basicInfo": "基本信息",
+    "errorMessage": "错误信息",
+    "analysisSummary": "分析结果摘要",
+    "noContentPreview": "此题目暂无内容预览，详细内容请查看数据库记录",
+    "notFound": "题目不存在或已被删除",
+    "step": "步骤 {step}",
+    "selectToDelete": "请选择要删除的题目",
+    "batchDeleteSuccess": "成功删除 {count} 个题目",
+    "batchDeletePartialFailed": "{count} 个题目删除失败",
+    "batchDeleteFailed": "批量删除失败",
+    "fetchFailed": "获取题目详情失败",
+    "statusUpdateSuccess": "状态更新成功",
+    "statusUpdateFailed": "状态更新失败",
+    "statusChangeConfirm": "确认要更改题目状态吗？",
+    "markAsCompleted": "标记为已完成",
+    "markAsConfirming": "标记为待确认",
+    "contentPlaceholder": "题目内容将在此处显示（支持LaTeX公式）",
+    "noContent": "暂无题目内容",
+    "noAnalysis": "暂无解析内容",
+    "analysisProcessing": "题目解析正在处理中...",
+    "options": {
+      "subjects": {
+        "数学": "数学",
+        "语文": "语文",
+        "英语": "英语",
+        "物理": "物理",
+        "化学": "化学",
+        "生物": "生物",
+        "历史": "历史",
+        "地理": "地理",
+        "政治": "政治"
+      },
+      "questionTypes": {
+        "选择题": "选择题",
+        "填空题": "填空题",
+        "判断题": "判断题",
+        "简答题": "简答题",
+        "计算题": "计算题",
+        "证明题": "证明题",
+        "作文题": "作文题"
+      },
+      "difficulties": {
+        "简单": "简单",
+        "中等": "中等",
+        "困难": "困难"
+      },
+      "grades": {
+        "grade": "{grade}年级"
+      },
+      "statuses": {
+        "pending": "待处理",
+        "processing": "处理中",
+        "completed": "已完成",
+        "failed": "失败",
+        "confirming": "待确认"
+      }
+    }
+  }
+}
