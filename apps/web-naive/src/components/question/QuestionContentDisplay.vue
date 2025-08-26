@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { ContentItem } from '#/api/questions';
 
-import FileContentDisplay from './FileContentDisplay.vue';
-import ImageContentDisplay from './ImageContentDisplay.vue';
-import TextContentDisplay from './TextContentDisplay.vue';
+import FileContentDisplay from './QuestionFileContentDisplay.vue';
+import ImageContentDisplay from './QuestionImageContentDisplay.vue';
+import TextContentDisplay from './QuestionTextContentDisplay.vue';
 
 interface Props {
   item: ContentItem;
@@ -58,6 +58,14 @@ withDefaults(defineProps<Props>(), {
 </template>
 
 <style scoped>
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .unknown-content {
+    background: #2a2a2a;
+    border-color: #444;
+  }
+}
+
 .content-display {
   width: 100%;
 }
@@ -65,16 +73,8 @@ withDefaults(defineProps<Props>(), {
 .unknown-content {
   padding: 1rem;
   text-align: center;
+  background: #f9f9f9;
   border: 1px dashed #ccc;
   border-radius: 4px;
-  background: #f9f9f9;
-}
-
-/* 深色模式支持 */
-@media (prefers-color-scheme: dark) {
-  .unknown-content {
-    background: #2a2a2a;
-    border-color: #444;
-  }
 }
 </style>

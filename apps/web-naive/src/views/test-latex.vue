@@ -3,7 +3,7 @@ import { ref } from 'vue';
 
 import { NButton, NCard, NDivider, NInput, NSpace } from 'naive-ui';
 
-import ContentsView from '#/components/content/ContentsView.vue';
+import ContentsView from '#/components/question/QuestionContentsView.vue';
 
 interface ContentItem {
   type: 'file' | 'image' | 'text';

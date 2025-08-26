@@ -13,16 +13,15 @@ import {
   NForm,
   NFormItem,
   NSpace,
-  NSpin,
   useMessage,
 } from 'naive-ui';
 
 import { getQuestion, updateQuestion } from '#/api/questions';
-import ContentsEdit from '#/components/content/ContentsEdit.vue';
-import QuestionDifficultyFormSelect from '#/components/QuestionDifficultyFormSelect.vue';
-import QuestionGradeFormSelect from '#/components/QuestionGradeFormSelect.vue';
-import QuestionSubjectFormSelect from '#/components/QuestionSubjectFormSelect.vue';
-import QuestionTypeFormSelect from '#/components/QuestionTypeFormSelect.vue';
+import ContentsEdit from '#/components/question/QuestionContentsEdit.vue';
+import QuestionDifficultyFormSelect from '#/components/question/QuestionDifficultyFormSelect.vue';
+import QuestionGradeFormSelect from '#/components/question/QuestionGradeFormSelect.vue';
+import QuestionSubjectFormSelect from '#/components/question/QuestionSubjectFormSelect.vue';
+import QuestionTypeFormSelect from '#/components/question/QuestionTypeFormSelect.vue';
 import { useQuestionOptions } from '#/composables/useQuestionOptions';
 import { $t } from '#/locales';
 import { gradeValidator } from '#/utils/validators';
@@ -218,115 +217,121 @@ onMounted(() => {
 
 <template>
   <div class="p-4">
-    <NSpin :show="fetchLoading">
-      <NCard>
-        <div class="mb-4 flex items-center justify-between">
-          <h1 class="text-2xl font-bold">
-            {{ $t('question.page.title.edit') }}
-          </h1>
-          <NButton @click="handleBack">
-            {{ $t('question.action.backToList') }}
-          </NButton>
-        </div>
+    <!-- 头部区域 -->
+    <div class="mb-4 flex items-center justify-between">
+      <h1 class="text-2xl font-semibold text-gray-900">
+        {{ $t('question.page.title.edit') }}
+      </h1>
+      <NSpace>
+        <NButton @click="handleBack">
+          {{ $t('common.action.back') }}
+        </NButton>
+        <NButton type="primary" @click="handleSubmit" :loading="loading">
+          {{ $t('common.action.save') }}
+        </NButton>
+      </NSpace>
+    </div>
 
-        <NForm
-          ref="formRef"
-          :model="formData"
-          :rules="rules"
-          label-placement="left"
-          label-width="100"
-          require-mark-placement="right-hanging"
+    <NCard>
+      <NForm
+        ref="formRef"
+        :model="formData"
+        :rules="rules"
+        label-placement="left"
+        label-width="100"
+        require-mark-placement="right-hanging"
+      >
+        <!-- 基本信息 -->
+        <NFormItem
+          :label="$t('question.property.questionType')"
+          path="question_type"
         >
-          <!-- 基本信息 -->
           <QuestionTypeFormSelect
             v-model:model-value="formData.question_type"
             :options="questionTypeOptions"
           />
+        </NFormItem>
+        <NFormItem :label="$t('question.property.subject')" path="subject">
           <QuestionSubjectFormSelect
             v-model:model-value="formData.subject"
             :options="subjectOptions"
           />
+        </NFormItem>
+        <NFormItem :label="$t('question.property.grade')" path="grade">
           <QuestionGradeFormSelect
             v-model:model-value="formData.grade"
             :options="gradeOptions"
           />
+        </NFormItem>
+        <NFormItem
+          :label="$t('question.property.difficulty')"
+          path="difficulty"
+        >
           <QuestionDifficultyFormSelect
             v-model:model-value="formData.difficulty"
             :options="difficultyOptions"
           />
-          <NFormItem :label="$t('question.property.knowledgePoints')">
-            <NDynamicTags v-model:value="formData.knowledge_points" />
-          </NFormItem>
+        </NFormItem>
+        <NFormItem :label="$t('question.property.knowledgePoints')">
+          <NDynamicTags v-model:value="formData.knowledge_points" />
+        </NFormItem>
 
-          <!-- 题目内容 -->
-          <NFormItem :label="$t('question.page.title.content')">
-            <ContentsEdit
-              :contents="formData.contents || []"
-              :editable="true"
-              :show-add-button="true"
-              @update:contents="handleContentsUpdate"
-            />
-          </NFormItem>
+        <!-- 题目内容 -->
+        <NFormItem :label="$t('question.page.title.content')">
+          <ContentsEdit
+            :contents="formData.contents || []"
+            :editable="true"
+            :show-add-button="true"
+            @update:contents="handleContentsUpdate"
+          />
+        </NFormItem>
 
-          <!-- 高级选项 -->
-          <NDivider title-placement="left">
-            {{ $t('question.page.title.advancedOptions') }}
-          </NDivider>
+        <!-- 高级选项 -->
+        <NDivider title-placement="left">
+          {{ $t('question.page.title.advancedOptions') }}
+        </NDivider>
 
-          <NFormItem :label="$t('question.page.title.reprocessOptions')">
-            <NSpace vertical>
-              <div>
-                <NCheckbox v-model:checked="formData.reanalysis">
-                  {{ $t('question.page.title.reanalyze') }}
-                  <span
-                    v-if="autoChecked && formData.reanalysis"
-                    class="ml-2 text-xs text-blue-600"
-                  >
-                    ({{ $t('question.page.content.auto') }})
-                  </span>
-                </NCheckbox>
-                <div class="ml-6 mt-1 text-sm text-gray-500">
-                  {{ $t('question.page.content.reanalyzeDescription') }}
-                </div>
+        <NFormItem :label="$t('question.page.title.reprocessOptions')">
+          <NSpace vertical>
+            <div>
+              <NCheckbox v-model:checked="formData.reanalysis">
+                {{ $t('question.page.title.reanalyze') }}
+                <span
+                  v-if="autoChecked && formData.reanalysis"
+                  class="ml-2 text-xs text-blue-600"
+                >
+                  ({{ $t('question.page.content.auto') }})
+                </span>
+              </NCheckbox>
+              <div class="ml-6 mt-1 text-sm text-gray-500">
+                {{ $t('question.page.content.reanalyzeDescription') }}
               </div>
-              <div>
-                <NCheckbox v-model:checked="formData.reembedding">
-                  {{ $t('question.page.title.reembedding') }}
-                  <span
-                    v-if="autoChecked && formData.reembedding"
-                    class="ml-2 text-xs text-blue-600"
-                  >
-                    ({{ $t('question.page.content.auto') }})
-                  </span>
-                </NCheckbox>
-                <div class="ml-6 mt-1 text-sm text-gray-500">
-                  {{ $t('question.page.content.reembeddingDescription') }}
-                </div>
-              </div>
-              <div
-                v-if="autoChecked"
-                class="mt-2 rounded border border-blue-200 bg-blue-50 p-2"
-              >
-                <div class="text-sm text-blue-700">
-                  {{ $t('question.page.content.reprocessDescription') }}
-                </div>
-              </div>
-            </NSpace>
-          </NFormItem>
-
-          <!-- 提交按钮 -->
-          <NFormItem>
-            <div class="flex gap-4">
-              <NButton type="primary" :loading="loading" @click="handleSubmit">
-                {{ $t('question.action.update') }}
-              </NButton>
-              <NButton @click="handleBack">
-                {{ $t('common.action.cancel') }}
-              </NButton>
             </div>
-          </NFormItem>
-        </NForm>
-      </NCard>
-    </NSpin>
+            <div>
+              <NCheckbox v-model:checked="formData.reembedding">
+                {{ $t('question.page.title.reembedding') }}
+                <span
+                  v-if="autoChecked && formData.reembedding"
+                  class="ml-2 text-xs text-blue-600"
+                >
+                  ({{ $t('question.page.content.auto') }})
+                </span>
+              </NCheckbox>
+              <div class="ml-6 mt-1 text-sm text-gray-500">
+                {{ $t('question.page.content.reembeddingDescription') }}
+              </div>
+            </div>
+            <div
+              v-if="autoChecked"
+              class="mt-2 rounded border border-blue-200 bg-blue-50 p-2"
+            >
+              <div class="text-sm text-blue-700">
+                {{ $t('question.page.content.reprocessDescription') }}
+              </div>
+            </div>
+          </NSpace>
+        </NFormItem>
+      </NForm>
+    </NCard>
   </div>
 </template>

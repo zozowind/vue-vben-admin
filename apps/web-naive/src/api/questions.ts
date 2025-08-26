@@ -113,6 +113,7 @@ export interface QuestionSearchItem {
   difficulty: string;
   grade: number;
   knowledge_points: string[];
+  contents: ContentItem[];
   status: string;
   error_message: string;
   created_at: string;
@@ -120,7 +121,6 @@ export interface QuestionSearchItem {
   similarity?: number;
   highlights?: string[];
   score?: number;
-  content_preview?: string;
 }
 
 export interface QuestionSearchRequest {

@@ -1,7 +1,7 @@
 {
   "action": {
     "add": "添加",
-    "backToList": "返回列表",
+    "back": "返回",
     "cancel": "取消",
     "confirm": "确认",
     "delete": "删除",
@@ -9,9 +9,15 @@
     "deleteSuccess": "删除成功",
     "edit": "编辑",
     "noPreview": "暂无预览",
+    "preview": "预览",
+    "remove": "移除",
     "reset": "重置",
+    "search": "搜索",
+    "select": "选择",
+    "unselect": "取消选择",
     "update": "更新",
-    "view": "查看"
+    "view": "查看",
+    "save": "保存"
   },
   "file": {
     "size": "大小",

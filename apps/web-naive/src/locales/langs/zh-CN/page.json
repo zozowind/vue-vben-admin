@@ -15,5 +15,13 @@
     "import": "题目导入",
     "list": "题目列表",
     "title": "题目管理"
+  },
+  "question-sets": {
+    "title": "题目集管理",
+    "list": "题目集列表",
+    "create": "创建题目集",
+    "detail": "题目集详情",
+    "edit": "编辑题目集",
+    "preview": "预览试卷"
   }
 }

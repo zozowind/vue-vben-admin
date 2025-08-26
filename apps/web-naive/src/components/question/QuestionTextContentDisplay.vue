@@ -163,9 +163,9 @@ declare global {
 }
 
 .content-wrapper {
+  min-height: 40px;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  min-height: 40px;
 }
 
 /* Markdown样式 */
@@ -175,22 +175,22 @@ declare global {
 .content-wrapper :deep(h4),
 .content-wrapper :deep(h5),
 .content-wrapper :deep(h6) {
-  margin: 1.5em 0 0.5em 0;
+  margin: 1.5em 0 0.5em;
   font-weight: 600;
   line-height: 1.25;
   color: var(--text-color-1);
 }
 
 .content-wrapper :deep(h1) {
+  padding-bottom: 0.3em;
   font-size: 2em;
   border-bottom: 1px solid var(--color-border-2);
-  padding-bottom: 0.3em;
 }
 
 .content-wrapper :deep(h2) {
+  padding-bottom: 0.3em;
   font-size: 1.5em;
   border-bottom: 1px solid var(--color-border-2);
-  padding-bottom: 0.3em;
 }
 
 .content-wrapper :deep(h3) {
@@ -216,28 +216,28 @@ declare global {
 }
 
 .content-wrapper :deep(blockquote) {
-  margin: 1em 0;
   padding: 0 1em;
+  margin: 1em 0;
   color: var(--text-color-2);
-  border-left: 4px solid var(--color-border-2);
   background: var(--color-fill-1);
+  border-left: 4px solid var(--color-border-2);
 }
 
 .content-wrapper :deep(code) {
   padding: 0.2em 0.4em;
+  font-family: Monaco, Menlo, 'Ubuntu Mono', monospace;
   font-size: 0.85em;
   background: var(--color-fill-2);
   border-radius: 3px;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 }
 
 .content-wrapper :deep(pre) {
-  margin: 1em 0;
   padding: 1em;
+  margin: 1em 0;
+  overflow-x: auto;
+  font-family: Monaco, Menlo, 'Ubuntu Mono', monospace;
   background: var(--color-fill-2);
   border-radius: 6px;
-  overflow-x: auto;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 }
 
 .content-wrapper :deep(pre code) {
@@ -248,8 +248,8 @@ declare global {
 
 .content-wrapper :deep(ul),
 .content-wrapper :deep(ol) {
-  margin: 1em 0;
   padding-left: 2em;
+  margin: 1em 0;
 }
 
 .content-wrapper :deep(li) {
@@ -258,27 +258,27 @@ declare global {
 }
 
 .content-wrapper :deep(hr) {
+  margin: 2em 0;
   border: none;
   border-top: 1px solid var(--color-border-2);
-  margin: 2em 0;
 }
 
 .content-wrapper :deep(table) {
+  width: 100%;
   margin: 1em 0;
   border-collapse: collapse;
-  width: 100%;
 }
 
 .content-wrapper :deep(th),
 .content-wrapper :deep(td) {
   padding: 0.75em;
-  border: 1px solid var(--color-border-2);
   text-align: left;
+  border: 1px solid var(--color-border-2);
 }
 
 .content-wrapper :deep(th) {
-  background: var(--color-fill-1);
   font-weight: 600;
+  background: var(--color-fill-1);
 }
 
 .content-wrapper :deep(a) {
@@ -303,8 +303,8 @@ declare global {
 }
 
 .content-wrapper :deep(.MathJax_Display) {
-  text-align: center;
   margin: 1em 0;
+  text-align: center;
 }
 
 .content-wrapper :deep(.MathJax_CHTML) {

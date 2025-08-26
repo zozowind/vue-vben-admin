@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { QuestionInfo } from '#/api/questions';
+import type { ContentItem, QuestionInfo } from '#/api/questions';
 
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -16,13 +16,13 @@ import {
 } from 'naive-ui';
 
 import { getQuestion, updateQuestionStatus } from '#/api/questions';
-import ContentsView from '#/components/content/ContentsView.vue';
-import QuestionDifficultyTag from '#/components/QuestionDifficultyTag.vue';
-import QuestionGradeTag from '#/components/QuestionGradeTag.vue';
-import QuestionKnowledgePointsTag from '#/components/QuestionKnowledgePointsTag.vue';
-import QuestionStatusTag from '#/components/QuestionStatusTag.vue';
-import QuestionSubjectTag from '#/components/QuestionSubjectTag.vue';
-import QuestionTypeTag from '#/components/QuestionTypeTag.vue';
+import ContentsView from '#/components/question/QuestionContentsView.vue';
+import QuestionDifficultyTag from '#/components/question/QuestionDifficultyTag.vue';
+import QuestionGradeTag from '#/components/question/QuestionGradeTag.vue';
+import QuestionKnowledgePointsTag from '#/components/question/QuestionKnowledgePointsTag.vue';
+import QuestionStatusTag from '#/components/question/QuestionStatusTag.vue';
+import QuestionSubjectTag from '#/components/question/QuestionSubjectTag.vue';
+import QuestionTypeTag from '#/components/question/QuestionTypeTag.vue';
 import { $t } from '#/locales';
 import { localTime } from '#/utils/time';
 
@@ -56,7 +56,7 @@ async function fetchQuestionDetail() {
 
 // 返回列表
 function handleBack() {
-  router.push('/questions/list');
+  router.back();
 }
 
 // 编辑题目
@@ -104,11 +104,11 @@ function getStatusChangeButtonText() {
     : $t('question.action.markAsConfirming');
 }
 
-function getStepContents(steps: string[]) {
+function getStepContents(steps: string[]): ContentItem[] {
   return steps.map((step) => ({
-    type: 'text',
+    type: 'text' as const,
     content: step,
-    format: 'text',
+    format: 'text' as const,
   }));
 }
 
@@ -121,39 +121,37 @@ onMounted(() => {
   <div class="p-4">
     <NSpin :show="loading">
       <div v-if="questionData" class="space-y-6">
-        <!-- 头部操作 -->
-        <NCard>
-          <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-bold">
-              {{ $t('question.page.title.detail') }}
-            </h1>
-            <NSpace>
-              <NButton @click="handleBack">
-                {{ $t('question.action.backToList') }}
-              </NButton>
-              <NButton type="primary" @click="handleEdit">
-                {{ $t('question.action.edit') }}
-              </NButton>
-              <NPopconfirm
-                v-if="canChangeStatus()"
-                :positive-text="$t('common.action.confirm')"
-                :negative-text="$t('common.action.cancel')"
-                @positive-click="handleStatusChange"
-              >
-                <template #trigger>
-                  <NButton
-                    type="warning"
-                    :loading="statusLoading"
-                    :disabled="statusLoading"
-                  >
-                    {{ getStatusChangeButtonText() }}
-                  </NButton>
-                </template>
-                {{ $t('question.message.statusChangeConfirm') }}
-              </NPopconfirm>
-            </NSpace>
-          </div>
-        </NCard>
+        <!-- 头部区域 -->
+        <div class="mb-4 flex items-center justify-between">
+          <h1 class="text-2xl font-semibold text-gray-900">
+            {{ $t('question.page.title.detail') }}
+          </h1>
+          <NSpace>
+            <NButton @click="handleBack">
+              {{ $t('common.action.back') }}
+            </NButton>
+            <NButton type="primary" @click="handleEdit">
+              {{ $t('question.action.edit') }}
+            </NButton>
+            <NPopconfirm
+              v-if="canChangeStatus()"
+              :positive-text="$t('common.action.confirm')"
+              :negative-text="$t('common.action.cancel')"
+              @positive-click="handleStatusChange"
+            >
+              <template #trigger>
+                <NButton
+                  type="warning"
+                  :loading="statusLoading"
+                  :disabled="statusLoading"
+                >
+                  {{ getStatusChangeButtonText() }}
+                </NButton>
+              </template>
+              {{ $t('question.message.statusChangeConfirm') }}
+            </NPopconfirm>
+          </NSpace>
+        </div>
 
         <!-- 1. 题目基本信息 -->
         <NCard :title="$t('question.page.title.basicInfo')">
@@ -335,8 +333,8 @@ onMounted(() => {
 .analysis-content .answer-section,
 .analysis-content .solution-section,
 .analysis-content .explanation-section {
-  border-left: 4px solid currentColor;
   padding-left: 1rem;
+  border-left: 4px solid currentcolor;
 }
 
 .latex-content {

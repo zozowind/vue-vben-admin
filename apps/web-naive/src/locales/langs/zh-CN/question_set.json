@@ -1,0 +1,72 @@
+{
+  "action": {
+    "backToList": "返回列表",
+    "clearSelected": "清空选择",
+    "create": "创建题目集",
+    "preview": "预览题目集"
+  },
+  "message": {
+    "atLeastOneQuestion": "请至少选择一道题目",
+    "createFailed": "创建题目集失败",
+    "createSuccess": "创建题目集成功",
+    "deleteConfirm": "确定删除题目集吗？",
+    "deleteFailed": "删除题目集失败",
+    "deleteSuccess": "删除题目集成功",
+    "fetchFailed": "获取题目集列表失败",
+    "noDefaultTemplate": "没有默认模板",
+    "questionSetNotExist": "题目集不存在或已被删除"
+  },
+  "options": {
+    "all": "全部",
+    "statuses": {
+      "active": "启用",
+      "inactive": "禁用"
+    },
+    "types": {
+      "practice": "练习提集"
+    }
+  },
+  "page": {
+    "content": {
+      "noQuestions": "暂无题目",
+      "selectedQuestions": "已选择 {count} 道题目",
+      "totalQuestions": "共 {total} 道题目"
+    },
+    "title": {
+      "chooseQuestion": "选择题目",
+      "createQuestionSet": "创建题目集",
+      "detail": "题目集详情",
+      "edit": "编辑题目集",
+      "questionList": "题目列表",
+      "questionSetInfo": "题目集信息",
+      "questionSetManagement": "题目集管理",
+      "selectedQuestions": "已选题目",
+      "settings": "设置"
+    }
+  },
+  "placeholder": {
+    "description": "请输入题目集描述",
+    "name": "请输入题目集名称"
+  },
+  "property": {
+    "actions": "操作",
+    "createdAt": "创建时间",
+    "description": "描述",
+    "id": "ID",
+    "name": "名称",
+    "settings": {
+      "showAnalysis": "是否显示解析",
+      "showAnswer": "是否显示答案",
+      "paperType": "纸张类型"
+    },
+    "status": "状态",
+    "set_type": "题目集类型",
+    "updatedAt": "更新时间"
+  },
+  "templates": {
+    "default": {
+      "name": "默认模板",
+      "description": "默认的题目集预览模板，适用于大多数场景"
+    }
+  }
+}

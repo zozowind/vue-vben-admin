@@ -38,6 +38,55 @@ const queryTypes = ['keyword', 'fulltext', 'semantic'];
 // 状态选项
 const statuses = ['processing', 'completed', 'failed', 'confirming'];
 
+// 题目集类型选项
+const questionSetTypes = ['practice'];
+
+// 题目集状态选项
+const questionSetStatuses = ['active', 'inactive'];
+
+// 导出选项
+const questionSetExports = ['pdf']; // TODO: 添加word和image
+
+interface PaperType {
+  name: string;
+  width: number;
+  height: number;
+}
+
+// 纸张类型选项
+const paperTypes: PaperType[] = [
+  {
+    name: 'a4',
+    width: 210,
+    height: 297,
+  },
+  {
+    name: 'a3',
+    width: 297,
+    height: 420,
+  },
+];
+
+interface FontSize {
+  name: string;
+  size: number;
+}
+
+const fontSizes: FontSize[] = [
+  {
+    name: 'small',
+    size: 12,
+  },
+  {
+    name: 'medium',
+    size: 16,
+  },
+  {
+    name: 'large',
+    size: 20,
+  },
+];
+
 // 学科选项
 export const getSubjectOptions = (): SelectOption[] =>
   subjects.map((subject) => ({
@@ -78,4 +127,48 @@ export const getStatusOptions = (): SelectOption[] =>
   statuses.map((status) => ({
     label: $t(`question.options.statuses.${status}`),
     value: status,
+  }));
+
+// 题目集类型选项
+export const getQuestionSetTypeOptions = (): SelectOption[] =>
+  questionSetTypes.map((questionSetType) => ({
+    label: $t(`question_set.options.types.${questionSetType}`),
+    value: questionSetType,
+  }));
+
+// 题目集状态选项
+export const getQuestionSetStatusOptions = (): SelectOption[] =>
+  questionSetStatuses.map((status) => ({
+    label: $t(`question_set.options.statuses.${status}`),
+    value: status,
+  }));
+
+// 导出选项
+export const getQuestionSetExportOptions = (): SelectOption[] =>
+  questionSetExports.map((exportOption) => ({
+    label: $t(`question_set.options.exports.${exportOption}`),
+    value: exportOption,
+  }));
+
+// 根据纸张类型名称获取纸张类型
+export const getPaperType = (name: string): PaperType => {
+  const pt = paperTypes.find((paperType) => paperType.name === name);
+  if (!pt) {
+    throw new Error(`Paper type ${name} not found`);
+  }
+  return pt;
+};
+
+// 纸张类型选项
+export const getPaperTypeOptions = (): SelectOption[] =>
+  paperTypes.map((paperType) => ({
+    label: $t(`question_set.options.paperTypes.${paperType.name}`),
+    value: paperType.name,
+  }));
+
+// 字体大小选项
+export const getFontSizeOptions = (): SelectOption[] =>
+  fontSizes.map((fontSize) => ({
+    label: $t(`question_set.options.fontSizes.${fontSize.name}`),
+    value: fontSize.size,
   }));

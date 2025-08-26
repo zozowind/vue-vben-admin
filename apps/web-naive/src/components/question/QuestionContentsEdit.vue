@@ -14,8 +14,8 @@ import {
 
 import { $t } from '#/locales';
 
-import ContentDisplay from './ContentDisplay.vue';
-import ContentModal from './ContentModal.vue';
+import ContentDisplay from './QuestionContentDisplay.vue';
+import QuestionContentModal from './QuestionContentModal.vue';
 
 interface Props {
   contents?: ContentItem[];
@@ -248,7 +248,7 @@ function moveContent(fromIndex: number, toIndex: number) {
 
     <!-- 内容弹窗（统一处理添加和编辑） -->
     <!-- eslint-disable-next-line vue/v-on-event-hyphenation -->
-    <ContentModal
+    <QuestionContentModal
       v-model:show="showModal"
       :editing-item="editingItem"
       @content-submitted="handleContentSubmitted"
@@ -257,12 +257,19 @@ function moveContent(fromIndex: number, toIndex: number) {
 </template>
 
 <style scoped>
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .editable-content:hover {
+    background-color: rgb(255 255 255 / 5%);
+  }
+}
+
 .content-block {
   transition: all 0.2s ease;
 }
 
 .content-block:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
 }
 
 .content-display-wrapper {
@@ -275,14 +282,7 @@ function moveContent(fromIndex: number, toIndex: number) {
 }
 
 .editable-content:hover {
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: rgb(0 0 0 / 2%);
   border-radius: 4px;
-}
-
-/* 深色模式支持 */
-@media (prefers-color-scheme: dark) {
-  .editable-content:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
 }
 </style>

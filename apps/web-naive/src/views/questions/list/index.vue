@@ -28,6 +28,8 @@ import {
 } from '#/api/questions';
 import { useQuestionOptions } from '#/composables/useQuestionOptions';
 import { $t } from '#/locales';
+import { getQuestionContentsPreview } from '#/utils/question';
+import { localTime } from '#/utils/time';
 
 defineOptions({
   name: 'QuestionList',
@@ -113,7 +115,7 @@ const columns = computed<DataTableColumns<QuestionSearchItem>>(() => [
     ellipsis: {
       tooltip: true,
     },
-    render: (row) => row.content_preview || $t('question.message.noPreview'),
+    render: (row) => getQuestionContentsPreview(row.contents),
   },
   {
     title: $t('question.property.status'),
@@ -126,7 +128,7 @@ const columns = computed<DataTableColumns<QuestionSearchItem>>(() => [
     title: $t('question.property.createdAt'),
     key: 'created_at',
     width: 180,
-    render: (row) => new Date(row.created_at).toLocaleString(),
+    render: (row) => localTime(row.created_at),
   },
   {
     title: $t('question.property.actions'),
@@ -162,7 +164,7 @@ const columns = computed<DataTableColumns<QuestionSearchItem>>(() => [
                 onPositiveClick: () => handleDelete(row.id),
               },
               {
-                default: () => $t('question.message.deleteConfirm'),
+                default: () => $t('question_set.message.deleteConfirm'),
                 trigger: () =>
                   h(
                     NButton,
@@ -295,6 +297,26 @@ onMounted(() => {
 
 <template>
   <div class="p-4">
+    <!-- 头部区域 -->
+    <div class="mb-4 flex items-center justify-between">
+      <h1 class="text-2xl font-semibold text-gray-900">
+        {{ $t('question.page.title.list') }}
+      </h1>
+      <NSpace>
+        <NButton type="primary" @click="handleImport">
+          {{ $t('question.action.import') }}
+        </NButton>
+        <NPopconfirm @positive-click="handleBatchDelete">
+          <template #trigger>
+            <NButton type="error" :disabled="selectedRowKeys.length === 0">
+              {{ $t('question.action.batchDelete') }}
+            </NButton>
+          </template>
+          {{ $t('question.message.deleteConfirm') }}
+        </NPopconfirm>
+      </NSpace>
+    </div>
+
     <!-- 搜索区域 -->
     <NCard class="mb-4">
       <div class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -359,17 +381,6 @@ onMounted(() => {
         <NButton @click="handleReset">
           {{ $t('common.action.reset') }}
         </NButton>
-        <NButton type="success" @click="handleImport">
-          {{ $t('question.action.import') }}
-        </NButton>
-        <NPopconfirm @positive-click="handleBatchDelete">
-          <template #trigger>
-            <NButton type="error" :disabled="selectedRowKeys.length === 0">
-              {{ $t('question.action.batchDelete') }}
-            </NButton>
-          </template>
-          {{ $t('question.message.deleteConfirm') }}
-        </NPopconfirm>
       </NSpace>
     </NCard>
 

@@ -16,11 +16,11 @@ import {
 } from 'naive-ui';
 
 import { importQuestion } from '#/api/questions';
-import ContentsEdit from '#/components/content/ContentsEdit.vue';
-import QuestionDifficultyFormSelect from '#/components/QuestionDifficultyFormSelect.vue';
-import QuestionGradeFormSelect from '#/components/QuestionGradeFormSelect.vue';
-import QuestionSubjectFormSelect from '#/components/QuestionSubjectFormSelect.vue';
-import QuestionTypeFormSelect from '#/components/QuestionTypeFormSelect.vue';
+import ContentsEdit from '#/components/question/QuestionContentsEdit.vue';
+import QuestionDifficultyFormSelect from '#/components/question/QuestionDifficultyFormSelect.vue';
+import QuestionGradeFormSelect from '#/components/question/QuestionGradeFormSelect.vue';
+import QuestionSubjectFormSelect from '#/components/question/QuestionSubjectFormSelect.vue';
+import QuestionTypeFormSelect from '#/components/question/QuestionTypeFormSelect.vue';
 import { useQuestionOptions } from '#/composables/useQuestionOptions';
 import { $t } from '#/locales';
 import { gradeValidator } from '#/utils/validators';
@@ -135,16 +135,18 @@ function handleBack() {
 
 <template>
   <div class="p-4">
+    <!-- 头部区域 -->
+    <div class="mb-4 flex items-center justify-between">
+      <h1 class="text-2xl font-semibold text-gray-900">
+        {{ $t('page.questions.import') }}
+      </h1>
+      <NSpace>
+        <NButton @click="handleBack">
+          {{ $t('question.action.backToList') }}
+        </NButton>
+      </NSpace>
+    </div>
     <NCard>
-      <template #header>
-        <div class="flex items-center justify-between">
-          <span>{{ $t('page.questions.import') }}</span>
-          <NButton @click="handleBack">
-            {{ $t('common.action.backToList') }}
-          </NButton>
-        </div>
-      </template>
-
       <NForm
         ref="formRef"
         :model="formData"

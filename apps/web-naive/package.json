@@ -42,10 +42,13 @@
     "@vben/types": "workspace:*",
     "@vben/utils": "workspace:*",
     "@vueuse/core": "catalog:",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "markdown-it": "^14.1.0",
     "naive-ui": "catalog:",
     "pinia": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "xe-utils": "^3.7.8"
   }
 }

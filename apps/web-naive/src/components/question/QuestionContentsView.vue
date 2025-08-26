@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ContentItem } from '#/api/questions';
 
-import ContentDisplay from './ContentDisplay.vue';
+import ContentDisplay from './QuestionContentDisplay.vue';
 
 interface Props {
   contents?: ContentItem[];
@@ -55,6 +55,24 @@ withDefaults(defineProps<Props>(), {
 </template>
 
 <style scoped>
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .content-container {
+    gap: 0.75rem;
+  }
+
+  .content-item {
+    font-size: 0.9rem;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .empty-text {
+    color: #666;
+  }
+}
+
 .contents-view {
   width: 100%;
   min-height: 40px;
@@ -73,15 +91,15 @@ withDefaults(defineProps<Props>(), {
 }
 
 .content-text.display-mode {
-  text-align: center;
   margin: 1rem 0;
+  text-align: center;
 }
 
 .content-image {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 0.5rem;
+  align-items: center;
 }
 
 .content-file {
@@ -92,32 +110,14 @@ withDefaults(defineProps<Props>(), {
 
 .empty-content {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   min-height: 100px;
-  color: #999;
   font-style: italic;
+  color: #999;
 }
 
 .empty-text {
   font-size: 0.875rem;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .content-container {
-    gap: 0.75rem;
-  }
-
-  .content-item {
-    font-size: 0.9rem;
-  }
-}
-
-/* 深色模式支持 */
-@media (prefers-color-scheme: dark) {
-  .empty-text {
-    color: #666;
-  }
 }
 </style>

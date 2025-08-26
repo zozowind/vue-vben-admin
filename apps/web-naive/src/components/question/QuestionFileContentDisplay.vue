@@ -174,19 +174,19 @@ function handleFileClick() {
 }
 
 .file-name {
-  font-weight: 500;
-  font-size: 14px;
-  color: #2d3748;
   margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2d3748;
   word-break: break-all;
 }
 
 .file-details {
+  display: flex;
+  gap: 4px;
+  align-items: center;
   font-size: 12px;
   color: #718096;
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 .file-type {
@@ -198,8 +198,8 @@ function handleFileClick() {
 }
 
 .file-source {
-  color: #3182ce;
   font-weight: 500;
+  color: #3182ce;
 }
 
 .file-actions {

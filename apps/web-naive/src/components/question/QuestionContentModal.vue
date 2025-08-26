@@ -355,7 +355,7 @@ async function handleSubmit() {
               <NText style="font-size: 16px">
                 {{ $t('question.page.content.clickOrDrag') }}
               </NText>
-              <NP depth="3" style="margin: 8px 0 0 0">
+              <NP depth="3" style="margin: 8px 0 0">
                 {{ $t('question.page.content.supportFormats') }}
               </NP>
               <div v-if="formData.uploadedFile" class="mt-3 text-green-600">
