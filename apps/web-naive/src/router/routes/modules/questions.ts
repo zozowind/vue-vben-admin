@@ -50,15 +50,6 @@ const routes: RouteRecordRaw[] = [
           title: $t('question.page.title.detail'),
         },
       },
-      {
-        name: 'TestLaTeX',
-        path: '/questions/test-latex',
-        component: () => import('#/views/test-latex.vue'),
-        meta: {
-          icon: 'lucide:test-tube',
-          title: 'LaTeX测试',
-        },
-      },
     ],
   },
 ];

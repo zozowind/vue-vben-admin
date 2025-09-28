@@ -3,6 +3,11 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 import { NSpin } from 'naive-ui';
 
+import {
+  ContentRendererSimple,
+  getContentRenderer,
+} from '#/utils/ContentRendererSimple';
+
 interface Props {
   content?: string;
   displayMode?: boolean;
@@ -16,135 +21,87 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const loading = ref(false);
-const mathJaxLoaded = ref(false);
-const markdownLoaded = ref(false);
+const rendererReady = ref(false);
 const contentContainer = ref<HTMLElement>();
+const renderedContent = ref<string>('');
 
-// 库引用
-const markdownLib = ref<any>(null);
+// 获取内容渲染器实例
+const contentRenderer = getContentRenderer();
 
-// 在客户端动态加载库
+// 初始化渲染器
 onMounted(async () => {
   loading.value = true;
   try {
-    // 动态导入markdown-it（默认启用）
-    const markdownModule = await import('markdown-it');
-    markdownLib.value = markdownModule.default({
-      html: true,
-      breaks: true,
-      linkify: true,
-      typographer: true,
-    });
-    markdownLoaded.value = true;
-
-    // 加载MathJax（使用CDN版本）
-    if (window.MathJax) {
-      mathJaxLoaded.value = true;
-    } else {
-      window.MathJax = {
-        tex: {
-          inlineMath: [['$', '$']],
-          displayMath: [['$$', '$$']],
-          processEscapes: true,
-          processEnvironments: true,
-        },
-        options: {
-          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-        },
-        startup: {
-          typeset: false,
-        },
-      };
-
-      // 动态加载MathJax脚本
-      const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
-      script.async = true;
-      script.addEventListener('load', () => {
-        mathJaxLoaded.value = true;
-      });
-      document.head.append(script);
-    }
+    await contentRenderer.warmup();
+    rendererReady.value = true;
+    await renderContent();
   } catch (error) {
-    console.error('Failed to load libraries:', error);
+    console.error('Failed to initialize content renderer:', error);
   } finally {
     loading.value = false;
   }
 });
 
-// 处理换行符
-function processLineBreaks(text: string): string {
-  return text.replaceAll('\n', '<br>');
-}
-
 // 渲染内容
-const renderedContent = computed(() => {
-  if (!props.content) return '';
-
-  let content = props.content;
-
-  try {
-    // 默认启用Markdown渲染
-    content =
-      markdownLoaded.value && markdownLib.value
-        ? markdownLib.value.render(content)
-        : processLineBreaks(content);
-
-    return content;
-  } catch (error) {
-    console.error('Content render error:', error);
-    return processLineBreaks(props.content);
-  }
-});
-
-// MathJax渲染函数
-const renderMathJax = async () => {
-  if (!mathJaxLoaded.value || !window.MathJax || !contentContainer.value) {
+const renderContent = async () => {
+  if (!props.content || !rendererReady.value) {
+    renderedContent.value = '';
     return;
   }
 
   try {
-    // 重新渲染数学公式
-    await window.MathJax.typesetPromise([contentContainer.value]);
+    loading.value = true;
+
+    // 检测内容类型，优化渲染选项
+    const hasMath = ContentRendererSimple.hasMathFormulas(props.content);
+    const hasMarkdown = ContentRendererSimple.hasMarkdownSyntax(props.content);
+
+    // 渲染内容
+    const result = await contentRenderer.render(props.content, {
+      enableMarkdown: hasMarkdown || props.displayMode, // 显示模式默认启用Markdown
+      enableMath: hasMath,
+      fontSize: props.fontSize,
+      // darkMode 会自动从 preferences.theme.mode 检测
+    });
+
+    renderedContent.value = result;
   } catch (error) {
-    console.error('MathJax render error:', error);
+    console.error('Content render error:', error);
+    // 回退到简单处理
+    renderedContent.value = props.content.replaceAll('\n', '<br>');
+  } finally {
+    loading.value = false;
   }
 };
 
-// 监听内容变化，重新渲染MathJax
+// 监听内容变化
 watch(
   () => props.content,
   async () => {
     await nextTick();
-    await renderMathJax();
+    await renderContent();
   },
 );
 
-// 监听MathJax加载完成，初始渲染
-watch(mathJaxLoaded, async (loaded) => {
-  if (loaded) {
+// 监听字体大小变化
+watch(
+  () => props.fontSize,
+  async () => {
     await nextTick();
-    await renderMathJax();
-  }
-});
+    await renderContent();
+  },
+);
 
 // 样式
 const contentStyle = computed(() => ({
   fontSize: `${props.fontSize}px`,
   lineHeight: 1.6,
 }));
-
-// 全局类型声明
-declare global {
-  interface Window {
-    MathJax: any;
-  }
-}
 </script>
 
 <template>
   <div class="text-content-display" :style="contentStyle">
-    <NSpin :show="loading" description="加载渲染器...">
+    <NSpin :show="loading" description="渲染内容中...">
       <!-- 内容区域 -->
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div
@@ -297,17 +254,24 @@ declare global {
   border-radius: 4px;
 }
 
-/* MathJax样式 */
-.content-wrapper :deep(.MathJax) {
-  outline: none;
-}
-
-.content-wrapper :deep(.MathJax_Display) {
+/* 数学公式样式 */
+.content-wrapper :deep(.math-block) {
   margin: 1em 0;
   text-align: center;
+  overflow-x: auto;
 }
 
-.content-wrapper :deep(.MathJax_CHTML) {
-  color: var(--text-color-1);
+.content-wrapper :deep(.math-inline) {
+  display: inline-block;
+  vertical-align: middle;
 }
+
+.content-wrapper :deep(.math-block svg),
+.content-wrapper :deep(.math-inline svg) {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* 暗色模式支持现在通过JavaScript直接处理SVG颜色 */
 </style>

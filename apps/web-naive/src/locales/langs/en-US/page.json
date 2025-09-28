@@ -16,6 +16,13 @@
     "list": "Question List",
     "import": "Import Questions"
   },
+  "test": {
+    "title": "Test Features",
+    "contentRenderer": "Content Renderer Test",
+    "latex": "LaTeX Formula Test",
+    "pdfExport": "PDF Export Test",
+    "canvasDebug": "Canvas Debug"
+  },
   "common": {
     "view": "View",
     "edit": "Edit",

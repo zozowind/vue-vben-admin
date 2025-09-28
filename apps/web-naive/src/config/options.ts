@@ -45,9 +45,9 @@ const questionSetTypes = ['practice'];
 const questionSetStatuses = ['active', 'inactive'];
 
 // 导出选项
-const questionSetExports = ['pdf']; // TODO: 添加word和image
+const questionSetExports = ['pdf', 'image', 'word'];
 
-interface PaperType {
+export interface PaperType {
   name: string;
   width: number;
   height: number;
@@ -147,7 +147,7 @@ export const getQuestionSetStatusOptions = (): SelectOption[] =>
 export const getQuestionSetExportOptions = (): SelectOption[] =>
   questionSetExports.map((exportOption) => ({
     label: $t(`question_set.options.exports.${exportOption}`),
-    value: exportOption,
+    key: exportOption,
   }));
 
 // 根据纸张类型名称获取纸张类型

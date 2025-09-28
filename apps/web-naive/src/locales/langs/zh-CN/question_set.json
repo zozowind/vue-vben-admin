@@ -24,6 +24,11 @@
     },
     "types": {
       "practice": "练习提集"
+    },
+    "exports": {
+      "pdf": "PDF导出",
+      "image": "图片导出",
+      "word": "Word导出"
     }
   },
   "page": {

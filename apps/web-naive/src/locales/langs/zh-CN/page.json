@@ -23,5 +23,12 @@
     "detail": "题目集详情",
     "edit": "编辑题目集",
     "preview": "预览试卷"
+  },
+  "test": {
+    "title": "测试功能",
+    "contentRenderer": "内容渲染器测试",
+    "latex": "LaTeX公式测试",
+    "pdfExport": "PDF导出测试",
+    "canvasDebug": "Canvas调试"
   }
 }

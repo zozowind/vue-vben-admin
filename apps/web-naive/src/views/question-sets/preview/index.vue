@@ -6,9 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { ArrowLeft, RotateCw } from '@vben/icons';
 
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { NButton, NSelect, NSwitch, useMessage } from 'naive-ui';
+import { NButton, NDropdown, NSelect, NSwitch, useMessage } from 'naive-ui';
 
 import { getQuestion } from '#/api/questions';
 import {
@@ -17,16 +15,23 @@ import {
 } from '#/components/questionSet/templates';
 import {
   getFontSizeOptions,
-  getPaperType,
   getPaperTypeOptions,
   getQuestionSetExportOptions,
 } from '#/config/options';
 import { useQuestionSetsStore } from '#/store/modules/question-sets';
+import { toPDF } from '#/utils/export';
 
 const route = useRoute();
 const router = useRouter();
 const message = useMessage();
 const questionSetsStore = useQuestionSetsStore();
+
+// 全局类型声明
+declare global {
+  interface Window {
+    MathJax: any;
+  }
+}
 
 // 响应式数据
 const loading = ref(false);
@@ -212,196 +217,60 @@ const handlePrint = () => {
   }, 1000);
 };
 
-const handleExport = (key: string) => {
+const handleExport = (...args: any[]) => {
+  console.warn('handleExport called with arguments:', args);
+  console.warn('Arguments length:', args.length);
+  console.warn('First argument type:', typeof args[0]);
+  console.warn('First argument value:', args[0]);
+
+  const key = args[0];
+  const option = args[1];
+
+  console.warn('Extracted key:', key, 'type:', typeof key);
+  console.warn('Extracted option:', option);
+
+  if (key === undefined || key === null) {
+    console.error('Key is undefined or null');
+    message.error('导出类型无效');
+    return;
+  }
+
   switch (key) {
     case 'image': {
+      console.warn('Executing image export');
       exportToImage();
       break;
     }
     case 'pdf': {
+      console.warn('Executing PDF export');
       exportToPDF();
       break;
     }
     case 'word': {
+      console.warn('Executing word export');
       exportToWord();
       break;
+    }
+    default: {
+      console.error('Unknown export key:', key, 'type:', typeof key);
+      message.error(`未知的导出类型: ${key}`);
     }
   }
 };
 
 const exportToPDF = async () => {
-  if (exporting.value) {
-    return;
-  }
-
-  try {
-    exporting.value = true;
-    message.info('正在生成PDF，请稍候...');
-
-    const paperElement = paperRef.value;
-    if (!paperElement) {
-      throw new Error('未找到试卷元素');
-    }
-
-    // 隐藏工具栏等不需要导出的元素
-    const toolbar = document.querySelector('.no-print') as HTMLElement;
-    const originalToolbarDisplay = toolbar?.style.display ?? '';
-    if (toolbar) {
-      toolbar.style.display = 'none';
-    }
-
-    // 显示打印专用元素
-    const printOnlyElements = document.querySelectorAll(
-      '.print-only',
-    ) as NodeListOf<HTMLElement>;
-    const originalDisplays: string[] = [];
-    printOnlyElements.forEach((el, index) => {
-      originalDisplays[index] = el.style.display ?? '';
-      el.style.display = 'block';
-    });
-
-    // 设置导出样式
-    const originalPaperStyle = {
-      position: paperElement.style.position,
-      left: paperElement.style.left,
-      top: paperElement.style.top,
-      transform: paperElement.style.transform,
-      boxShadow: paperElement.style.boxShadow,
-      margin: paperElement.style.margin,
-    };
-
-    // 临时调整样式以适应导出
-    paperElement.style.position = 'relative';
-    paperElement.style.left = 'auto';
-    paperElement.style.top = 'auto';
-    paperElement.style.transform = 'none';
-    paperElement.style.boxShadow = 'none';
-    paperElement.style.margin = '0';
-
-    // 等待样式应用
-    await nextTick();
-
-    // 计算页面尺寸
-    const paperWidth = paperElement.offsetWidth;
-    const paperHeight = paperElement.offsetHeight;
-
-    // 使用 html2canvas 生成图片
-    const canvas = await html2canvas(paperElement, {
-      scale: 2, // 提高分辨率
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      width: paperWidth,
-      height: paperHeight,
-      scrollX: 0,
-      scrollY: 0,
-    });
-
-    // 恢复原始样式
-    Object.assign(paperElement.style, originalPaperStyle);
-
-    // 恢复工具栏显示
-    if (toolbar) {
-      toolbar.style.display = originalToolbarDisplay;
-    }
-
-    // 恢复打印专用元素隐藏
-    printOnlyElements.forEach((el, index) => {
-      el.style.display = originalDisplays[index] ?? '';
-    });
-
-    // 创建 PDF
-    const imgData = canvas.toDataURL('image/png');
-
-    // 根据纸张类型设置PDF尺寸（毫米）
-    const pt = getPaperType(paperType.value);
-    const pdfWidth = pt.width;
-    const pdfHeight = pt.height;
-
-    // eslint-disable-next-line new-cap
-    const pdf = new jsPDF({
-      orientation: pdfHeight > pdfWidth ? 'portrait' : 'landscape',
-      unit: 'mm',
-      format: [pdfWidth, pdfHeight],
-    });
-
-    // 计算图片在PDF中的尺寸
-    const imgWidth = pdfWidth - 20; // 左右各留10mm边距
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    // 如果内容高度超过单页，需要分页
-    if (imgHeight > pdfHeight - 20) {
-      // 分页处理
-      const pageHeight = pdfHeight - 20; // 上下各留10mm边距
-      const totalPages = Math.ceil(imgHeight / pageHeight);
-
-      for (let i = 0; i < totalPages; i++) {
-        if (i > 0) {
-          pdf.addPage([pdfWidth, pdfHeight]);
-        }
-
-        // 计算当前页面应该显示的内容区域
-        const sourceY = (i * pageHeight * canvas.height) / imgHeight;
-        const sourceHeight = Math.min(
-          (pageHeight * canvas.height) / imgHeight,
-          canvas.height - sourceY,
-        );
-
-        // 创建当前页面的canvas片段
-        const pageCanvas = document.createElement('canvas');
-        const pageCtx = pageCanvas.getContext('2d')!;
-        pageCanvas.width = canvas.width;
-        pageCanvas.height = sourceHeight;
-
-        // 绘制当前页面的内容
-        pageCtx.drawImage(
-          canvas,
-          0,
-          sourceY,
-          canvas.width,
-          sourceHeight,
-          0,
-          0,
-          canvas.width,
-          sourceHeight,
-        );
-
-        const pageImgData = pageCanvas.toDataURL('image/png');
-        const pageImgHeight = (sourceHeight * imgWidth) / canvas.width;
-
-        pdf.addImage(
-          pageImgData,
-          'PNG',
-          10, // x: 10mm边距
-          10, // y: 10mm边距
-          imgWidth,
-          pageImgHeight,
-        );
-      }
-    } else {
-      // 单页处理
-      const yPosition = (pdfHeight - imgHeight) / 2; // 垂直居中
-      pdf.addImage(
-        imgData,
-        'PNG',
-        10, // x: 10mm边距
-        Math.max(10, yPosition), // y: 至少10mm边距
-        imgWidth,
-        imgHeight,
-      );
-    }
-
-    // 下载PDF
-    const fileName = `${questionSet.value?.name || '练习题集'}_${new Date().toLocaleDateString('zh-CN')}.pdf`;
-    pdf.save(fileName);
-
-    message.success('PDF导出成功！');
-  } catch (error) {
-    console.error('PDF导出失败:', error);
-    message.error('导出PDF失败');
-  } finally {
-    exporting.value = false;
-  }
+  const filename = `${questionSet.value?.name || '练习题集'}_${new Date().toLocaleDateString('zh-CN')}.pdf`;
+  const state = await toPDF(
+    paperRef.value,
+    {
+      name: 'a4',
+      width: 210,
+      height: 297,
+    },
+    filename,
+  );
+  exporting.value = state.exporting;
+  message.info(state.result);
 };
 
 const exportToWord = async () => {
@@ -424,6 +293,22 @@ const exportToImage = async () => {
 // 生命周期
 onMounted(() => {
   fetchData();
+  // 调试：检查导出选项
+  const exportOptions = getQuestionSetExportOptions();
+  console.warn('Export options:', exportOptions);
+  console.warn('Export options type:', typeof exportOptions);
+  console.warn('Export options is array:', Array.isArray(exportOptions));
+  if (Array.isArray(exportOptions)) {
+    exportOptions.forEach((option, index) => {
+      console.warn(`Option ${index}:`, option);
+      console.warn(
+        `Option ${index} value:`,
+        option.value,
+        'type:',
+        typeof option.value,
+      );
+    });
+  }
 });
 </script>
 
@@ -454,6 +339,7 @@ onMounted(() => {
           <NDropdown
             :options="getQuestionSetExportOptions()"
             @select="handleExport"
+            trigger="click"
           >
             <NButton :loading="exporting"> 导出 </NButton>
           </NDropdown>
@@ -499,12 +385,11 @@ onMounted(() => {
           <span class="text-sm text-gray-600">
             {{ $t('question_set.property.settings.paperType') }} :
           </span>
-          <CommonSelect
+          <NSelect
             v-model:value="paperType"
             :options="getPaperTypeOptions()"
             style="width: 100px"
             size="small"
-            placeholder="question_set.placeholder.settings.paperType"
             @update:value="updatePreviewSettings"
           />
         </div>
